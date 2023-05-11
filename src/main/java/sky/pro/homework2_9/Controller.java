@@ -97,7 +97,7 @@ public class Controller {
     @GetMapping("/salaryMore")
     public String salaryMoreThan(@RequestParam("moreThan") int salaryMoreThan) {
         return "<pre><h2><b>Сотрудник с зарплатой меньше чем - " + salaryMoreThan + " рублей</b></h2><pre>" +
-                "<pre>" + employeeBook.salaryLessThan(salaryMoreThan) + "<pre>";
+                "<pre>" + employeeBook.salaryMoreThan(salaryMoreThan) + "<pre>";
 
     }
 
@@ -106,7 +106,7 @@ public class Controller {
         return "<pre><h2><b>Сотрудник с минимальной зарплатой - " +
                 employeeBook.findEmployeesMinimalSalary() + " " +
                 employeeBook.getEmployees().get(employeeBook.findEmployeesMinimalSalary()).getSalary() +
-                " р. </b></h2><pre>" + "<pre><h2><b>Сотрудник с максимальной зарплатой больше чем - " +
+                " р. </b></h2><pre>" + "<pre><h2><b>Сотрудник с максимальной зарплатой - " +
                 employeeBook.findEmployeesMaximalSalary() + " " +
                 employeeBook.getEmployees().get(employeeBook.findEmployeesMaximalSalary()).getSalary() +
                 " р.</b></h2><pre>";

@@ -146,15 +146,6 @@ public class EmployeeBook {
     public StringBuilder salaryLessThan(int lessThanThisNum) {
         int lessSalariesCounter;
         StringBuilder rezString = new StringBuilder("");
-//        for (Employee employee : employees.values()) {
-//            if (employee.getSalary() < lessThanThisNum) {
-//                rezString.append("- " + employee.getFullName() +
-//                        ", зарплата: " + employee.getSalary() +
-//                        ", отдел: " + employee.getDept() + "\n");
-//                lessSalariesCounter++;
-//            }
-//
-//        }
         lessSalariesCounter = (int) employees.values().stream()
                 .filter(employee -> employee.getSalary() < lessThanThisNum)
                 .peek(employee -> {
@@ -169,17 +160,14 @@ public class EmployeeBook {
     }
 
     public StringBuilder salaryMoreThan(int moreThanThisNum) {
-        int moreSalariesCounter = 0;
+        int moreSalariesCounter;
         StringBuilder rezString = new StringBuilder("");
-        for (Employee employee : employees.values()) {
-            if (employee.getSalary() > moreThanThisNum) {
-                rezString.append("- " + employee.getFullName() +
+        moreSalariesCounter = (int) employees.values().stream()
+                .filter(employee -> employee.getSalary() > moreThanThisNum)
+                .peek(employee -> rezString.append("- " + employee.getFullName() +
                         ", зарплата: " + employee.getSalary() +
-                        ", отдел: " + employee.getDept() + "\n");
-                moreSalariesCounter++;
-            }
-
-        }
+                        ", отдел: " + employee.getDept() + "\n"))
+                .count();
         if (moreSalariesCounter == 0) {
             return rezString.append("Сотрудников с зарплатой выше " + moreThanThisNum + " рублей " + " - нет");
         }
@@ -188,27 +176,15 @@ public class EmployeeBook {
 
 
     public String findEmployeesMinimalSalary() {
-        int min = Integer.MAX_VALUE;
-        String fullName = "";
-        for (Employee employee : employees.values()) {
-            if (employee.getSalary() <= min) {
-                min = employee.getSalary();
-                fullName = employee.getFullName();
-            }
-        }
-        return fullName;
+        return employees.values().stream()
+                .min(Comparator.comparingInt(employee -> employee.getSalary()))
+                .map(employee -> employee.getFullName()).orElse("");
     }
 
     public String findEmployeesMaximalSalary() {
-        int max = Integer.MIN_VALUE;
-        String fullName = "";
-        for (Employee employee : employees.values()) {
-            if (employee.getSalary() > max) {
-                max = employee.getSalary();
-                fullName = employee.getFullName();
-            }
-        }
-        return fullName;
+        return employees.values().stream()
+                .max(Comparator.comparingInt(e -> e.getSalary()))
+                .map(employee -> employee.getFullName()).orElse("");
     }
 
     public String findAndPrintEmployeeById(int id) {

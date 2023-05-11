@@ -42,11 +42,10 @@ public class EmployeeBook {
         if (employees.isEmpty()) {
             return rezString.append("интерфейс Map не содержит ни одного сотрудника");
         }
-        for (Employee employee : employees.values()) {
-            rezString.append("- " + employee.getFullName() +
-                    ", зарплата: " + employee.getSalary() +
-                    ", отдел: " + employee.getDept() + "\n");
-        }
+        employees.values().stream()
+                .forEach(employee -> rezString.append("- " + employee.getFullName() +
+                        ", зарплата: " + employee.getSalary() +
+                        ", отдел: " + employee.getDept() + "\n"));
         return rezString;
     }
 
@@ -88,76 +87,11 @@ public class EmployeeBook {
         if (employees.isEmpty()) {
             return rezString.append("интерфейс Map не содержит ни одного сотрудника");
         }
-        for (Employee employee : employees.values()) {
-            rezString.append("- " + employee.getFullName() +
-                    ", зарплата: " + employee.getSalary() +
-                    "\n");
-        }
+        employees.values().stream()
+                .forEach(employee -> rezString.append("- " + employee.getFullName() +
+                        ", зарплата: " + employee.getSalary() +
+                        "\n"));
         return rezString;
-    }
-
-
-    public StringBuilder printEmployeesAccordingToDept1() {
-        int[] arrDept = new int[employees.size()];
-        /**
-         * Пытаюсь получить упорядоченный список существующих отделов, где отделы не повторяются.
-         * Для этого:
-         * Сохдаю массив arrDept и записываю в него номера существующих отделов в произвольном порядке.
-         */
-        int i = 0;
-        for (Employee employee : employees.values()) {
-            arrDept[i++] = employee.getDept();
-        }
-        System.out.println("Несортированный массив arrDept: " + Arrays.toString(arrDept));
-        Arrays.sort(arrDept);
-        System.out.println("Сортированный массив arrDept: " + Arrays.toString(arrDept));
-        int arrElCounter = 1;
-        /**
-         * После сортировки массива в нем могут быть одинаковые отделы
-         * Создаю переменную arrElCounter, которая просуммирует уникальные отделы, и станет количеством элементов
-         * в массиве с сортированными неповторяющимися отделами.
-         */
-        for (i = 0; i < employees.size() - 1; i++) {
-            if (arrDept[i] != arrDept[i + 1]) {
-                arrElCounter++;
-            }
-        }
-        /**
-         * Переменная заполнилась и теперь можно создать итоговый массив с отделами arrDeptUnic.
-         */
-        int[] arrDeptUnic = new int[arrElCounter];
-        /**
-         * Теперь нужно пройтись циклом по сортированному массиву arrDept,
-         * выбрать из него неповторяющиеся номера отделов, и записать их в массив arrDeptUnic
-         * который имеет необходимое количество элементов.
-         */
-        arrElCounter = 0;
-        System.out.println("Пустой массив arrDeptUnic: " + Arrays.toString(arrDeptUnic));
-        for (i = 0; i < employees.size() - 1; i++) {
-            if (arrDept[i] != arrDept[i + 1]) {
-                arrDeptUnic[arrElCounter] = arrDept[i];
-                System.arraycopy(arrDept, i, arrDeptUnic, arrElCounter, 1);
-                arrElCounter++;
-            }
-        }
-        arrDeptUnic[arrElCounter] = arrDept[arrDept.length - 1];
-        System.out.println("Заполненный массив arrDeptUnic: " + Arrays.toString(arrDeptUnic));
-        /**
-         * Массив с существующими отделами получен, и теперь можно найти
-         * каждого сотрудника принадлежащего своему отделу и вывести его в консоль.
-         * Для этого создаю цикл в цикле. Внешний цикл - это перебор отделов. Внутренний
-         * цикл это перебор сотрудников и отбор тех чей номер отдела совпадает с
-         * номером отдела во внешнем цикле.
-         */
-        StringBuilder sbRez = new StringBuilder("");
-        Arrays.stream(arrDeptUnic).
-                forEach(e -> {
-                    sbRez.append("\nОтдел №" + e + "\n");
-                    employees.values().stream()
-                            .filter(employee -> employee.getDept() == e)
-                            .forEach(employee -> sbRez.append(employee.getFullName() + " \n"));
-                });
-        return sbRez;
     }
 
     public StringBuilder printEmployeesAccordingToDept() {
@@ -190,10 +124,10 @@ public class EmployeeBook {
     }
 
     public void salaryIndexing(double percentOfIndexing) {
-        for (Employee employee : employees.values()) {
+        employees.values().stream().forEach(employee -> {
             double increasedSalary = employee.getSalary() * (1 + percentOfIndexing / 100);
             employee.setSalary((int) increasedSalary);
-        }
+        });
     }
 
     public StringBuilder salariesBILO() {
@@ -202,26 +136,32 @@ public class EmployeeBook {
         if (emloyeeSalaryesBILO.isEmpty()) {
             return rezString.append("интерфейс Map не содержит ни одного сотрудника");
         }
-        for (Employee employee : emloyeeSalaryesBILO.values()) {
-            rezString.append("- " + employee.getFullName() +
-                    ", зарплата: " + employee.getSalary() +
-                    ", отдел: " + employee.getDept() + "\n");
-        }
+        employees.values().stream()
+                .forEach(employee -> rezString.append("- " + employee.getFullName() +
+                        ", зарплата: " + employee.getSalary() +
+                        ", отдел: " + employee.getDept() + "\n"));
         return rezString;
     }
 
     public StringBuilder salaryLessThan(int lessThanThisNum) {
-        int lessSalariesCounter = 0;
+        int lessSalariesCounter;
         StringBuilder rezString = new StringBuilder("");
-        for (Employee employee : employees.values()) {
-            if (employee.getSalary() < lessThanThisNum) {
-                rezString.append("- " + employee.getFullName() +
-                        ", зарплата: " + employee.getSalary() +
-                        ", отдел: " + employee.getDept() + "\n");
-                lessSalariesCounter++;
-            }
-
-        }
+//        for (Employee employee : employees.values()) {
+//            if (employee.getSalary() < lessThanThisNum) {
+//                rezString.append("- " + employee.getFullName() +
+//                        ", зарплата: " + employee.getSalary() +
+//                        ", отдел: " + employee.getDept() + "\n");
+//                lessSalariesCounter++;
+//            }
+//
+//        }
+        lessSalariesCounter = (int) employees.values().stream()
+                .filter(employee -> employee.getSalary() < lessThanThisNum)
+                .peek(employee -> {
+                    rezString.append("- " + employee.getFullName() +
+                            ", зарплата: " + employee.getSalary() +
+                            ", отдел: " + employee.getDept() + "\n");
+                }).count();
         if (lessSalariesCounter == 0) {
             return rezString.append("Сотрудников с зарплатой ниже " + lessThanThisNum + " рублей " + " - нет");
         }

@@ -150,7 +150,7 @@ public class Controller {
 
     @GetMapping("/max-salary")
     public String getMaxSalaryByDept(@RequestParam("departmentId") int dept) {
-        String stringRez = employeeBook.getMaxSalaryByDept(dept);
+        String stringRez = employeeBook.getMaxSalaryByDept(dept).toString();
         return "<pre><h2><b>Максимальная зарплата по отделу: " +
                 stringRez +
                 " рублей</b></h2><pre>";
@@ -158,7 +158,7 @@ public class Controller {
     }
     @GetMapping("/min-salary")
     public String getMinSalaryByDept(@RequestParam("departmentId") int dept) {
-        String stringRez = employeeBook.getMinSalaryByDept(dept);
+        Employee stringRez = employeeBook.getMinSalaryByDept(dept);
         return "<pre><h2><b>Минимальная зарплата по отделу: " +
                 stringRez +
                 " рублей</b></h2><pre>";

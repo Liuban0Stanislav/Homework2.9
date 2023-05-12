@@ -228,59 +228,34 @@ public class EmployeeBook {
         return Double.toString(sumSalaries / deptsCounter);
     }
 
-
-//    public String getMaxSalaryByDept(int deptOfEmployee) {
-//        if (deptOfEmployee >= 6 && deptOfEmployee < 1) {
-//            throw new RuntimeException();
-//        }
-//        List<Employee> employeeList = employees.values().stream().collect(Collectors.toList());
-//        String employeeMaxSalary = String.valueOf(employeeList.stream()
-//                .filter(employee -> employee.getDept() == deptOfEmployee)
-//                .mapToInt(Employee::getSalary)
-//                .max()
-//                .orElse(0));
-//
-//        return employeeMaxSalary;
-//    }
-
-    public String getMaxSalaryByDept(int deptOfEmployee) {
-        if (deptOfEmployee >= 6 && deptOfEmployee < 1) {
-            throw new RuntimeException();
-        }
-        List<Employee> employeeList = employees.values().stream().collect(Collectors.toList());
-        String employeeMaxSalary = String.valueOf(employeeList.stream()
-                .filter(employee -> employee.getDept() == deptOfEmployee)
-                .mapToInt(Employee::getSalary)
-                .max()
-                .orElse(0));
-
-        return employeeMaxSalary;
+public Employee getMaxSalaryByDept(int deptOfEmployee) {
+    if (deptOfEmployee >= 6 && deptOfEmployee < 1) {
+        throw new RuntimeException();
     }
+    return employees.values().stream()
+            .filter(e -> e.getDept() == deptOfEmployee)
+            .max(Comparator.comparing(Employee::getSalary))
+            .orElse(null);
+}
 
-    public String getMinSalaryByDept(int deptOfEmployee) {
+    public Employee getMinSalaryByDept(int deptOfEmployee) {
         if (deptOfEmployee >= 6 && deptOfEmployee < 1) {
             throw new RuntimeException();
         }
-        List<Employee> employeeList = employees.values().stream().collect(Collectors.toList());
-        int MinSalary = Integer.MAX_VALUE;
-        String employeeMinSalary = String.valueOf(employeeList.stream()
-                .filter(employee -> employee.getDept() == deptOfEmployee)
-                .mapToInt(Employee::getSalary)
-                .min()
-                .orElse(0));
-
-        return employeeMinSalary;
+        return employees.values().stream()
+                .filter(e -> e.getDept() == deptOfEmployee)
+                .min(Comparator.comparing(Employee::getSalary))
+                .orElse(null);
     }
 
     public String findAllEmployeesAccordingDept(int deptOfEmployee) {
         if (deptOfEmployee >= 6 && deptOfEmployee < 1) {
             throw new RuntimeException();
         }
-        List<Employee> employeeList = employees.values().stream().collect(Collectors.toList());
-        List<String> employeesFromDept = employeeList.stream()
+        return employees.values().stream()
                 .filter(e -> e.getDept() == deptOfEmployee)
                 .map(e -> e + "\n")
-                .collect(Collectors.toList());
-        return employeesFromDept.toString();
+                .collect(Collectors.toList())
+                .toString();
     }
 }

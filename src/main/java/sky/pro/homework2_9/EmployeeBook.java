@@ -93,35 +93,41 @@ public class EmployeeBook {
                         "\n"));
         return rezString;
     }
-
-    public StringBuilder printEmployeesAccordingToDept() {
-        /**
-         * Беру из Map только номера отделов, переписываю Map в List,
-         * сортирую, удаляю повторяющиеся номера и сохраняю в List
-         */
-        List<Integer> sortedList = employees.values().stream()
-                .map(e -> e.getDept())
-                .sorted()
-                .distinct()
-                .collect(Collectors.toList());
-        /**
-         * Создаю редактируемую строку sbRez.
-         * Прохожусь по списку sortedList и каждую итерацию добавляю в строку заголовок
-         * с новым номером отдела. Внутри этого потока sortedList, создаю поток
-         * в котором, пробегаю по Map. И фильтрую сотрудников у которых,
-         * номер департамента совпадает с номером департамента из текущей
-         * итерации списка sortedList. Таких сотрудников дописываем в строку sbRez
-         */
-        StringBuilder sbRez = new StringBuilder("");
-        sortedList.stream()
-                .forEach(dept -> {
-                    sbRez.append("\nОтдел №" + dept + "\n");
-                    employees.values().stream()
-                            .filter(employee -> employee.getDept() == dept)
-                            .forEach(employee -> sbRez.append(employee.getFullName() + " \n"));
-                });
-        return sbRez;
+    public Map<Integer, List<Employee>> printEmployeesAccordingToDept() {
+        Map<Integer, List<Employee>> employeeInDepts = employees.values().stream()
+                .collect(Collectors.groupingBy(Employee::getDept));
+        return employeeInDepts;
     }
+
+
+//    public StringBuilder printEmployeesAccordingToDept2() {
+//        /**
+//         * Беру из Map только номера отделов, переписываю Map в List,
+//         * сортирую, удаляю повторяющиеся номера и сохраняю в List
+//         */
+//        List<Integer> sortedList = employees.values().stream()
+//                .map(e -> e.getDept())
+//                .sorted()
+//                .distinct()
+//                .collect(Collectors.toList());
+//        /**
+//         * Создаю редактируемую строку sbRez.
+//         * Прохожусь по списку sortedList и каждую итерацию добавляю в строку заголовок
+//         * с новым номером отдела. Внутри этого потока sortedList, создаю поток
+//         * в котором, пробегаю по Map. И фильтрую сотрудников у которых,
+//         * номер департамента совпадает с номером департамента из текущей
+//         * итерации списка sortedList. Таких сотрудников дописываем в строку sbRez
+//         */
+//        StringBuilder sbRez = new StringBuilder("");
+//        sortedList.stream()
+//                .forEach(dept -> {
+//                    sbRez.append("\nОтдел №" + dept + "\n");
+//                    employees.values().stream()
+//                            .filter(employee -> employee.getDept() == dept)
+//                            .forEach(employee -> sbRez.append(employee.getFullName() + " \n"));
+//                });
+//        return sbRez;
+//    }
 
     public void salaryIndexing(double percentOfIndexing) {
         employees.values().stream().forEach(employee -> {
@@ -222,6 +228,20 @@ public class EmployeeBook {
         return Double.toString(sumSalaries / deptsCounter);
     }
 
+
+//    public String getMaxSalaryByDept(int deptOfEmployee) {
+//        if (deptOfEmployee >= 6 && deptOfEmployee < 1) {
+//            throw new RuntimeException();
+//        }
+//        List<Employee> employeeList = employees.values().stream().collect(Collectors.toList());
+//        String employeeMaxSalary = String.valueOf(employeeList.stream()
+//                .filter(employee -> employee.getDept() == deptOfEmployee)
+//                .mapToInt(Employee::getSalary)
+//                .max()
+//                .orElse(0));
+//
+//        return employeeMaxSalary;
+//    }
 
     public String getMaxSalaryByDept(int deptOfEmployee) {
         if (deptOfEmployee >= 6 && deptOfEmployee < 1) {

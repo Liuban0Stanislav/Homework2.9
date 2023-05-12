@@ -1,0 +1,4 @@
+http://localhost:8080/max-salary?departmentId=5
+http://localhost:8080/min-salary?departmentId=5
+http://localhost:8080/departments/allEmployeesInDept?departmentId=5
+http://localhost:8080/departments/all
